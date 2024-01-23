@@ -12,17 +12,53 @@
             font-family: Arial, sans-serif;
         }
         #titulo {
-            font-size: 80px;
+            font-size: 75px;
         }
         #contador {
-            font-size: 60px;
+            font-size: 50px;
             margin: 20px;
         }
     </style>
 </head>
 <body>
     <div id="titulo">Pomodoro do Vitor</div>
+    <input type="number" id="minutos" placeholder="Minutos">
+    <input type="number" id="segundos" placeholder="Segundos">
     <div id="contador">00:00</div>
+    <button id="startStop">Iniciar</button>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/yci475Vwc10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <script>
+        var interval;
+        var minutos;
+        var segundos;
+        var contador = document.getElementById('contador');
+        var startStop = document.getElementById('startStop');
+
+        startStop.addEventListener('click', function() {
+            if (startStop.textContent === 'Iniciar') {
+                minutos = document.getElementById('minutos').value;
+                segundos = document.getElementById('segundos').value;
+                startStop.textContent = 'Parar';
+                interval = setInterval(function() {
+                    if (segundos == 0) {
+                        if (minutos == 0) {
+                            clearInterval(interval);
+                            startStop.textContent = 'Iniciar';
+                        } else {
+                            minutos--;
+                            segundos = 59;
+                        }
+                    } else {
+                        segundos--;
+                    }
+                    contador.textContent = minutos + ':' + (segundos < 10 ? '0' + segundos : segundos);
+                }, 1000);
+            } else {
+                clearInterval(interval);
+                startStop.textContent = 'Iniciar';
+            }
+        });
+    </script>
 </body>
 </html>
